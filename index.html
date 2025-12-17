@@ -484,7 +484,11 @@
                 </div>
             </div>
 
-            <button class="bulk-check-btn" id="checkAllBtn">Check All Domains</button>
+            <div style="display: flex; gap: 10px; justify-content: center;">
+                <button class="bulk-check-btn" id="checkAllBtn">Check All Domains</button>
+                <button class="bulk-check-btn" id="checkUncheckedBtn">Check Unchecked Only</button>
+                <button class="bulk-check-btn" id="hardRefreshBtn">Hard Refresh</button>
+            </div>
         </div>
 
         <div class="view-controls">
@@ -977,6 +981,194 @@
             { name: 'cleo.ai', category: 'brandable', description: 'Cleo glory', status: 'unchecked' },
             { name: 'theo.ai', category: 'brandable', description: 'Theo divine gift', status: 'unchecked' },
             { name: 'ivy.ai', category: 'short', description: 'Ivy climbing connection', status: 'unchecked' },
+
+            // Short Simple Words - Action Verbs (6 letters max)
+            { name: 'zoom.com', category: 'short', description: 'Fast movement - ultra memorable', status: 'unchecked' },
+            { name: 'snap.com', category: 'short', description: 'Quick capture instant', status: 'unchecked' },
+            { name: 'flip.ai', category: 'short', description: 'Quick reversal change', status: 'unchecked' },
+            { name: 'spark.ai', category: 'short', description: 'Ignite ideas energy', status: 'unchecked' },
+            { name: 'surge.ai', category: 'short', description: 'Powerful momentum wave', status: 'unchecked' },
+            { name: 'drift.ai', category: 'short', description: 'Smooth intentional flow', status: 'unchecked' },
+            { name: 'beam.ai', category: 'short', description: 'Send transmit light', status: 'unchecked' },
+            { name: 'jump.ai', category: 'short', description: 'Leap action forward', status: 'unchecked' },
+            { name: 'dash.ai', category: 'short', description: 'Quick sprint rush', status: 'unchecked' },
+            { name: 'rush.ai', category: 'short', description: 'Speed urgency flow', status: 'unchecked' },
+            { name: 'bolt.ai', category: 'short', description: 'Lightning fast speed', status: 'unchecked' },
+            { name: 'blaze.ai', category: 'short', description: 'Fire trail blazing', status: 'unchecked' },
+            { name: 'shift.ai', category: 'short', description: 'Change transform move', status: 'unchecked' },
+            { name: 'blend.ai', category: 'short', description: 'Mix combine merge', status: 'unchecked' },
+            { name: 'craft.ai', category: 'short', description: 'Create build make', status: 'unchecked' },
+            { name: 'build.ai', category: 'short', description: 'Construct create grow', status: 'unchecked' },
+            { name: 'forge.ai', category: 'short', description: 'Shape create hammer', status: 'unchecked' },
+            { name: 'climb.ai', category: 'short', description: 'Ascend rise up', status: 'unchecked' },
+            { name: 'rise.ai', category: 'short', description: 'Ascend elevate grow', status: 'unchecked' },
+            { name: 'soar.ai', category: 'short', description: 'Fly high rise', status: 'unchecked' },
+
+            // Short Emotional & Psychological (6 letters max)
+            { name: 'calm.ai', category: 'short', description: 'Peace tranquility zen', status: 'unchecked' },
+            { name: 'bliss.ai', category: 'short', description: 'Joy happiness contentment', status: 'unchecked' },
+            { name: 'zen.ai', category: 'short', description: 'Meditation centered peace', status: 'unchecked' },
+            { name: 'joy.ai', category: 'short', description: 'Happiness delight pleasure', status: 'unchecked' },
+            { name: 'peace.ai', category: 'short', description: 'Calm harmony balance', status: 'unchecked' },
+            { name: 'trust.ai', category: 'short', description: 'Confidence reliability faith', status: 'unchecked' },
+            { name: 'hope.ai', category: 'short', description: 'Optimism aspiration future', status: 'unchecked' },
+            { name: 'brave.ai', category: 'short', description: 'Courage boldness strength', status: 'unchecked' },
+            { name: 'bold.ai', category: 'short', description: 'Daring confident strong', status: 'unchecked' },
+            { name: 'pure.ai', category: 'short', description: 'Clean simple genuine', status: 'unchecked' },
+            { name: 'bright.ai', category: 'short', description: 'Brilliant smart clear', status: 'unchecked' },
+            { name: 'clear.ai', category: 'short', description: 'Transparent obvious simple', status: 'unchecked' },
+            { name: 'fresh.ai', category: 'short', description: 'New clean crisp', status: 'unchecked' },
+            { name: 'sharp.ai', category: 'short', description: 'Precise keen focused', status: 'unchecked' },
+            { name: 'swift.ai', category: 'short', description: 'Fast quick rapid', status: 'unchecked' },
+
+            // Short Objects & Concrete (6 letters max)
+            { name: 'rock.ai', category: 'short', description: 'Solid stable strong', status: 'unchecked' },
+            { name: 'stone.ai', category: 'short', description: 'Enduring grounded firm', status: 'unchecked' },
+            { name: 'leaf.ai', category: 'short', description: 'Nature growth organic', status: 'unchecked' },
+            { name: 'rain.ai', category: 'short', description: 'Refresh cleanse flow', status: 'unchecked' },
+            { name: 'wind.ai', category: 'short', description: 'Flow movement change', status: 'unchecked' },
+            { name: 'wave.ai', category: 'short', description: 'Motion rhythm pattern', status: 'unchecked' },
+            { name: 'sky.ai', category: 'short', description: 'Open limitless above', status: 'unchecked' },
+            { name: 'sea.ai', category: 'short', description: 'Ocean vast deep', status: 'unchecked' },
+            { name: 'sun.ai', category: 'short', description: 'Bright energy warmth', status: 'unchecked' },
+            { name: 'moon.ai', category: 'short', description: 'Night calm cycle', status: 'unchecked' },
+            { name: 'star.ai', category: 'short', description: 'Bright distant guide', status: 'unchecked' },
+            { name: 'cloud.ai', category: 'short', description: 'Float light ethereal', status: 'unchecked' },
+            { name: 'fire.ai', category: 'short', description: 'Energy passion burn', status: 'unchecked' },
+            { name: 'water.ai', category: 'short', description: 'Flow adapt essential', status: 'unchecked' },
+            { name: 'earth.ai', category: 'short', description: 'Ground foundation base', status: 'unchecked' },
+            { name: 'ice.ai', category: 'short', description: 'Cool clear precise', status: 'unchecked' },
+            { name: 'snow.ai', category: 'short', description: 'Pure clean unique', status: 'unchecked' },
+            { name: 'flame.ai', category: 'short', description: 'Burn bright intense', status: 'unchecked' },
+            { name: 'light.ai', category: 'short', description: 'Illuminate bright clear', status: 'unchecked' },
+            { name: 'spark.com', category: 'short', description: 'Ignite on classic .com', status: 'unchecked' },
+
+            // Short Abstract Concepts (6 letters max)
+            { name: 'prism.ai', category: 'short', description: 'Clarity spectrum vision', status: 'unchecked' },
+            { name: 'apex.ai', category: 'short', description: 'Peak summit highest', status: 'unchecked' },
+            { name: 'nexus.ai', category: 'short', description: 'Connection hub center', status: 'unchecked' },
+            { name: 'sphere.ai', category: 'short', description: 'Complete global whole', status: 'unchecked' },
+            { name: 'vertex.ai', category: 'short', description: 'Point peak angle', status: 'unchecked' },
+            { name: 'core.ai', category: 'short', description: 'Center essential base', status: 'unchecked' },
+            { name: 'edge.ai', category: 'short', description: 'Cutting frontier border', status: 'unchecked' },
+            { name: 'peak.ai', category: 'short', description: 'Summit top maximum', status: 'unchecked' },
+            { name: 'arc.ai', category: 'short', description: 'Curve journey path', status: 'unchecked' },
+            { name: 'axis.ai', category: 'short', description: 'Center pivot point', status: 'unchecked' },
+            { name: 'node.ai', category: 'short', description: 'Point connection network', status: 'unchecked' },
+            { name: 'grid.ai', category: 'short', description: 'Structure network system', status: 'unchecked' },
+            { name: 'loop.ai', category: 'short', description: 'Circle repeat cycle', status: 'unchecked' },
+            { name: 'path.ai', category: 'short', description: 'Journey route way', status: 'unchecked' },
+            { name: 'link.ai', category: 'short', description: 'Connect chain bond', status: 'unchecked' },
+
+            // Short 2-Syllable Brandable (6 letters max)
+            { name: 'notion.ai', category: 'short', description: 'Idea concept thought', status: 'unchecked' },
+            { name: 'canva.ai', category: 'short', description: 'Canvas create design', status: 'unchecked' },
+            { name: 'figma.ai', category: 'short', description: 'Figure design tool', status: 'unchecked' },
+            { name: 'miro.ai', category: 'short', description: 'Mirror reflect board', status: 'unchecked' },
+            { name: 'stripe.com', category: 'short', description: 'Payment stripe pattern', status: 'unchecked' },
+            { name: 'lyft.com', category: 'short', description: 'Lift ride transport', status: 'unchecked' },
+
+            // Short Nature (6 letters max)
+            { name: 'forest.ai', category: 'short', description: 'Trees growth ecosystem', status: 'unchecked' },
+            { name: 'river.ai', category: 'short', description: 'Flow constant movement', status: 'unchecked' },
+            { name: 'ocean.ai', category: 'short', description: 'Vast deep powerful', status: 'unchecked' },
+            { name: 'meadow.ai', category: 'short', description: 'Open peaceful growth', status: 'unchecked' },
+            { name: 'fern.ai', category: 'short', description: 'Plant delicate green', status: 'unchecked' },
+            { name: 'moss.ai', category: 'short', description: 'Ancient resilient soft', status: 'unchecked' },
+            { name: 'bird.ai', category: 'short', description: 'Free flight perspective', status: 'unchecked' },
+            { name: 'deer.ai', category: 'short', description: 'Grace alert aware', status: 'unchecked' },
+            { name: 'fox.ai', category: 'short', description: 'Clever adaptive smart', status: 'unchecked' },
+            { name: 'owl.ai', category: 'short', description: 'Wise night vision', status: 'unchecked' },
+            { name: 'bear.ai', category: 'short', description: 'Strong powerful protective', status: 'unchecked' },
+            { name: 'hawk.ai', category: 'short', description: 'Sharp vision focused', status: 'unchecked' },
+            { name: 'wolf.ai', category: 'short', description: 'Pack smart loyal', status: 'unchecked' },
+            { name: 'coral.ai', category: 'short', description: 'Ocean beauty complex', status: 'unchecked' },
+            { name: 'pearl.ai', category: 'short', description: 'Precious rare valued', status: 'unchecked' },
+            { name: 'amber.ai', category: 'short', description: 'Warm golden ancient', status: 'unchecked' },
+
+            // More Short Invented/Simple (6 letters max)
+            { name: 'flux.ai', category: 'short', description: 'Flow change constant', status: 'unchecked' },
+            { name: 'byte.ai', category: 'short', description: 'Digital data unit', status: 'unchecked' },
+            { name: 'code.ai', category: 'short', description: 'Program build create', status: 'unchecked' },
+            { name: 'data.ai', category: 'short', description: 'Information facts insights', status: 'unchecked' },
+            { name: 'pixel.ai', category: 'short', description: 'Digital image element', status: 'unchecked' },
+            { name: 'bit.ai', category: 'short', description: 'Binary digital small', status: 'unchecked' },
+            { name: 'sync.ai', category: 'short', description: 'Match align connect', status: 'unchecked' },
+            { name: 'flow.ai', category: 'short', description: 'Stream movement ease', status: 'unchecked' },
+            { name: 'flex.ai', category: 'short', description: 'Adapt bend adjust', status: 'unchecked' },
+            { name: 'blend.com', category: 'short', description: 'Mix merge combine', status: 'unchecked' },
+            { name: 'spin.ai', category: 'short', description: 'Rotate turn cycle', status: 'unchecked' },
+            { name: 'swirl.ai', category: 'short', description: 'Spiral twist flow', status: 'unchecked' },
+            { name: 'twist.ai', category: 'short', description: 'Turn rotate change', status: 'unchecked' },
+            { name: 'sweep.ai', category: 'short', description: 'Clean clear move', status: 'unchecked' },
+
+            // Short Sound Words (6 letters max)
+            { name: 'click.ai', category: 'short', description: 'Sound connect engage', status: 'unchecked' },
+            { name: 'buzz.ai', category: 'short', description: 'Vibrate excite energy', status: 'unchecked' },
+            { name: 'hum.ai', category: 'short', description: 'Vibrate rhythm smooth', status: 'unchecked' },
+            { name: 'ring.ai', category: 'short', description: 'Sound circle connect', status: 'unchecked' },
+            { name: 'chime.ai', category: 'short', description: 'Alert sound notify', status: 'unchecked' },
+            { name: 'tone.ai', category: 'short', description: 'Sound voice quality', status: 'unchecked' },
+
+            // More Short Simple (6 letters max)
+            { name: 'true.ai', category: 'short', description: 'Honest real genuine', status: 'unchecked' },
+            { name: 'real.ai', category: 'short', description: 'Authentic actual true', status: 'unchecked' },
+            { name: 'solid.ai', category: 'short', description: 'Stable strong reliable', status: 'unchecked' },
+            { name: 'prime.ai', category: 'short', description: 'First best optimal', status: 'unchecked' },
+            { name: 'vital.ai', category: 'short', description: 'Essential crucial alive', status: 'unchecked' },
+            { name: 'vivid.ai', category: 'short', description: 'Bright clear intense', status: 'unchecked' },
+            { name: 'quick.ai', category: 'short', description: 'Fast rapid instant', status: 'unchecked' },
+            { name: 'rapid.ai', category: 'short', description: 'Swift speedy fast', status: 'unchecked' },
+            { name: 'agile.ai', category: 'short', description: 'Nimble flexible quick', status: 'unchecked' },
+            { name: 'super.ai', category: 'short', description: 'Above better enhanced', status: 'unchecked' },
+            { name: 'ultra.ai', category: 'short', description: 'Beyond extreme maximum', status: 'unchecked' },
+            { name: 'hyper.ai', category: 'short', description: 'Above beyond intense', status: 'unchecked' },
+            { name: 'mega.ai', category: 'short', description: 'Large powerful huge', status: 'unchecked' },
+
+            // Short Spatial/Direction (6 letters max)
+            { name: 'north.ai', category: 'short', description: 'Direction guide lead', status: 'unchecked' },
+            { name: 'south.ai', category: 'short', description: 'Direction warm navigate', status: 'unchecked' },
+            { name: 'east.ai', category: 'short', description: 'Rising new beginning', status: 'unchecked' },
+            { name: 'west.ai', category: 'short', description: 'Frontier explore new', status: 'unchecked' },
+            { name: 'center.ai', category: 'short', description: 'Middle focal hub', status: 'unchecked' },
+
+            // Short Simple Verbs (6 letters max)
+            { name: 'find.ai', category: 'short', description: 'Discover locate search', status: 'unchecked' },
+            { name: 'seek.ai', category: 'short', description: 'Search pursue quest', status: 'unchecked' },
+            { name: 'know.ai', category: 'short', description: 'Understand aware learn', status: 'unchecked' },
+            { name: 'learn.ai', category: 'short', description: 'Grow study acquire', status: 'unchecked' },
+            { name: 'grow.ai', category: 'short', description: 'Expand develop rise', status: 'unchecked' },
+            { name: 'plan.ai', category: 'short', description: 'Strategy organize design', status: 'unchecked' },
+            { name: 'make.ai', category: 'short', description: 'Create build craft', status: 'unchecked' },
+            { name: 'play.ai', category: 'short', description: 'Fun engage interact', status: 'unchecked' },
+            { name: 'work.ai', category: 'short', description: 'Operate function do', status: 'unchecked' },
+            { name: 'help.ai', category: 'short', description: 'Assist support aid', status: 'unchecked' },
+            { name: 'guide.ai', category: 'short', description: 'Lead direct show', status: 'unchecked' },
+            { name: 'lead.ai', category: 'short', description: 'Guide direct front', status: 'unchecked' },
+            { name: 'track.ai', category: 'short', description: 'Follow monitor trace', status: 'unchecked' },
+            { name: 'trace.ai', category: 'short', description: 'Find follow track', status: 'unchecked' },
+            { name: 'scan.ai', category: 'short', description: 'Search examine check', status: 'unchecked' },
+            { name: 'view.ai', category: 'short', description: 'See look observe', status: 'unchecked' },
+            { name: 'watch.ai', category: 'short', description: 'Observe monitor see', status: 'unchecked' },
+            { name: 'check.ai', category: 'short', description: 'Verify test confirm', status: 'unchecked' },
+            { name: 'test.ai', category: 'short', description: 'Verify check trial', status: 'unchecked' },
+            { name: 'prove.ai', category: 'short', description: 'Verify show confirm', status: 'unchecked' },
+            { name: 'solve.ai', category: 'short', description: 'Fix resolve answer', status: 'unchecked' },
+            { name: 'fix.ai', category: 'short', description: 'Repair solve mend', status: 'unchecked' },
+
+            // More Creative Short (6 letters max)
+            { name: 'glint.ai', category: 'short', description: 'Shine flash sparkle', status: 'unchecked' },
+            { name: 'gleam.ai', category: 'short', description: 'Shine bright light', status: 'unchecked' },
+            { name: 'bloom.ai', category: 'short', description: 'Flower grow flourish', status: 'unchecked' },
+            { name: 'bloom.com', category: 'short', description: 'Flourish on .com', status: 'unchecked' },
+            { name: 'verde.ai', category: 'short', description: 'Green growth life', status: 'unchecked' },
+            { name: 'azure.ai', category: 'short', description: 'Blue sky clear', status: 'unchecked' },
+            { name: 'ember.ai', category: 'short', description: 'Glow warmth lasting', status: 'unchecked' },
+            { name: 'crest.ai', category: 'short', description: 'Top wave peak', status: 'unchecked' },
+            { name: 'crown.ai', category: 'short', description: 'Top royalty best', status: 'unchecked' },
+            { name: 'vault.ai', category: 'short', description: 'Secure store safe', status: 'unchecked' },
+            { name: 'haven.ai', category: 'short', description: 'Safe refuge shelter', status: 'unchecked' },
+            { name: 'oasis.ai', category: 'short', description: 'Refuge rest beauty', status: 'unchecked' },
         ];
 
         let filteredDomains = [...domains];
@@ -990,6 +1182,33 @@
             }
         } catch (e) {
             console.error('Error loading favorites:', e);
+        }
+
+        // Load domain statuses from localStorage
+        try {
+            const savedStatuses = localStorage.getItem('domainStatuses');
+            if (savedStatuses) {
+                const statusMap = JSON.parse(savedStatuses);
+                domains.forEach(domain => {
+                    if (statusMap[domain.name]) {
+                        domain.status = statusMap[domain.name];
+                    }
+                });
+            }
+        } catch (e) {
+            console.error('Error loading domain statuses:', e);
+        }
+
+        function saveDomainStatuses() {
+            try {
+                const statusMap = {};
+                domains.forEach(domain => {
+                    statusMap[domain.name] = domain.status;
+                });
+                localStorage.setItem('domainStatuses', JSON.stringify(statusMap));
+            } catch (e) {
+                console.error('Error saving domain statuses:', e);
+            }
         }
 
         function renderDomains() {
@@ -1196,6 +1415,7 @@
                 actualDomain.status = 'error';
             }
 
+            saveDomainStatuses();
             renderDomains();
         }
 
@@ -1215,6 +1435,55 @@
 
             btn.disabled = false;
             btn.textContent = 'Check All Domains';
+        }
+
+        async function checkUncheckedDomains() {
+            const btn = document.getElementById('checkUncheckedBtn');
+            btn.disabled = true;
+            btn.textContent = 'Checking...';
+
+            // Get indices of unchecked domains
+            const uncheckedIndices = domains
+                .map((domain, index) => domain.status === 'unchecked' ? index : -1)
+                .filter(index => index !== -1);
+
+            if (uncheckedIndices.length === 0) {
+                btn.disabled = false;
+                btn.textContent = 'Check Unchecked Only';
+                return;
+            }
+
+            // Check domains in batches to avoid rate limiting
+            const batchSize = 5;
+            for (let i = 0; i < uncheckedIndices.length; i += batchSize) {
+                const batch = uncheckedIndices.slice(i, i + batchSize);
+                await Promise.all(batch.map(idx => checkDomain(idx)));
+                // Small delay between batches
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
+
+            btn.disabled = false;
+            btn.textContent = 'Check Unchecked Only';
+        }
+
+        function hardRefresh() {
+            if (confirm('This will reset all domain statuses. Are you sure?')) {
+                // Reset all domain statuses to unchecked
+                domains.forEach(domain => {
+                    domain.status = 'unchecked';
+                });
+
+                // Clear localStorage
+                try {
+                    localStorage.removeItem('domainStatuses');
+                } catch (e) {
+                    console.error('Error clearing domain statuses:', e);
+                }
+
+                // Re-render
+                renderDomains();
+                renderListView();
+            }
         }
 
         function applyFilters() {
@@ -1246,6 +1515,8 @@
         document.getElementById('searchInput').addEventListener('input', applyFilters);
         document.getElementById('favoritesFilter').addEventListener('change', applyFilters);
         document.getElementById('checkAllBtn').addEventListener('click', checkAllDomains);
+        document.getElementById('checkUncheckedBtn').addEventListener('click', checkUncheckedDomains);
+        document.getElementById('hardRefreshBtn').addEventListener('click', hardRefresh);
 
         // View toggle listeners
         document.getElementById('gridViewBtn').addEventListener('click', () => toggleView('grid'));
