@@ -250,6 +250,156 @@
             font-weight: bold;
             color: #28a745;
         }
+
+        .view-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 10px;
+        }
+
+        .view-btn {
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .view-btn:hover {
+            background: #5568d3;
+        }
+
+        .view-btn.active {
+            background: #4a5bb8;
+        }
+
+        .export-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .export-btn {
+            padding: 10px 20px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .export-btn:hover {
+            background: #218838;
+        }
+
+        .domains-list {
+            display: none;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .domains-list.active {
+            display: block;
+        }
+
+        .domains-grid.hidden {
+            display: none;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #667eea;
+            color: white;
+        }
+
+        thead th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        thead th:hover {
+            background: #5568d3;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #e0e0e0;
+            transition: background 0.2s;
+        }
+
+        tbody tr:hover {
+            background: #f5f5f5;
+        }
+
+        tbody td {
+            padding: 12px 15px;
+        }
+
+        .domain-name-cell {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .category-cell {
+            text-transform: capitalize;
+        }
+
+        .status-cell {
+            font-weight: 600;
+        }
+
+        .favorite-cell {
+            text-align: center;
+            font-size: 1.3em;
+            cursor: pointer;
+        }
+
+        .favorite-cell.active {
+            color: #ff6b6b;
+        }
+
+        .favorite-cell:not(.active) {
+            color: #ddd;
+        }
+
+        .action-cell {
+            text-align: center;
+        }
+
+        .action-cell button {
+            padding: 6px 12px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85em;
+        }
+
+        .action-cell button:hover {
+            background: #5568d3;
+        }
     </style>
 </head>
 <body>
@@ -337,7 +487,34 @@
             <button class="bulk-check-btn" id="checkAllBtn">Check All Domains</button>
         </div>
 
+        <div class="view-controls">
+            <div class="view-toggle">
+                <button class="view-btn active" id="gridViewBtn">Grid View</button>
+                <button class="view-btn" id="listViewBtn">List View</button>
+            </div>
+            <div class="export-buttons">
+                <button class="export-btn" id="exportFilteredBtn">Export Filtered (CSV)</button>
+                <button class="export-btn" id="exportAllBtn">Export All (CSV)</button>
+            </div>
+        </div>
+
         <div class="domains-grid" id="domainsGrid"></div>
+
+        <div class="domains-list" id="domainsList">
+            <table>
+                <thead>
+                    <tr>
+                        <th>♥</th>
+                        <th>Domain</th>
+                        <th>Category</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="domainsTableBody"></tbody>
+            </table>
+        </div>
     </div>
 
     <script>
@@ -510,6 +687,296 @@
             { name: 'meet.video', category: 'video-chat', description: 'Meet on .video TLD', status: 'unchecked' },
             { name: 'face.social', category: 'social', description: 'Face on .social TLD', status: 'unchecked' },
             { name: 'connect.social', category: 'social', description: 'Connect on .social TLD', status: 'unchecked' },
+
+            // Creative Misspellings - Vowel Removal
+            { name: 'facetm.ai', category: 'creative', description: 'Face Time shortened - modern tech feel', status: 'unchecked' },
+            { name: 'avatr.ai', category: 'creative', description: 'Avatar without vowels - sleek branding', status: 'unchecked' },
+            { name: 'inflncr.ai', category: 'influencer', description: 'Influencer compressed - Gen Z appeal', status: 'unchecked' },
+            { name: 'vdeo.ai', category: 'video-chat', description: 'Video shortened - minimalist', status: 'unchecked' },
+            { name: 'chattr.ai', category: 'video-chat', description: 'Chatter compressed - conversational', status: 'unchecked' },
+            { name: 'meetr.ai', category: 'video-chat', description: 'Meeter simplified', status: 'unchecked' },
+            { name: 'starrr.ai', category: 'influencer', description: 'Star with emphasis - playful', status: 'unchecked' },
+            { name: 'facly.ai', category: 'short', description: 'Face-ly suffix - ultra modern', status: 'unchecked' },
+
+            // Double Consonant Creative Spellings
+            { name: 'facce.ai', category: 'creative', description: 'Face with Italian flair', status: 'unchecked' },
+            { name: 'chatt.ai', category: 'video-chat', description: 'Chat doubled - emphasizes conversation', status: 'unchecked' },
+            { name: 'meettz.ai', category: 'video-chat', description: 'Meet with extra impact', status: 'unchecked' },
+            { name: 'viddo.ai', category: 'video-chat', description: 'Video playfully spelled', status: 'unchecked' },
+            { name: 'talkkr.ai', category: 'video-chat', description: 'Talk + kr ending - edgy', status: 'unchecked' },
+            { name: 'facezz.ai', category: 'playful', description: 'Faces with attitude', status: 'unchecked' },
+            { name: 'starrd.ai', category: 'influencer', description: 'Starred - VIP treatment', status: 'unchecked' },
+
+            // Vowel Substitution & Creative Swaps
+            { name: 'facee.ai', category: 'creative', description: 'Face extended - distinctive', status: 'unchecked' },
+            { name: 'chayt.ai', category: 'video-chat', description: 'Chat phonetic variation', status: 'unchecked' },
+            { name: 'meatz.ai', category: 'social', description: 'Meet Z gen spelling', status: 'unchecked' },
+            { name: 'vidyo.ai', category: 'video-chat', description: 'Video with yo ending', status: 'unchecked' },
+            { name: 'fayce.ai', category: 'creative', description: 'Face alternative spelling', status: 'unchecked' },
+            { name: 'tawk.ai', category: 'video-chat', description: 'Talk phonetic - casual', status: 'unchecked' },
+            { name: 'konnect.ai', category: 'social', description: 'Connect with K - edgy', status: 'unchecked' },
+
+            // Invented Portmanteau Words
+            { name: 'favatalk.ai', category: 'brandable', description: 'Fave + avatar + talk blend', status: 'unchecked' },
+            { name: 'vidmeet.ai', category: 'brandable', description: 'Video + meet portmanteau', status: 'unchecked' },
+            { name: 'chatface.ai', category: 'brandable', description: 'Chat + face fusion', status: 'unchecked' },
+            { name: 'starverse.ai', category: 'brandable', description: 'Star + universe - metaverse feel', status: 'unchecked' },
+            { name: 'faceflix.ai', category: 'brandable', description: 'Face + flix entertainment', status: 'unchecked' },
+            { name: 'vidmingle.ai', category: 'brandable', description: 'Video + mingle social', status: 'unchecked' },
+            { name: 'facefuse.ai', category: 'brandable', description: 'Face + fuse connection', status: 'unchecked' },
+            { name: 'talkstar.io', category: 'brandable', description: 'Talk + star combination', status: 'unchecked' },
+            { name: 'vidvibe.ai', category: 'brandable', description: 'Video + vibe energy', status: 'unchecked' },
+            { name: 'meetwave.ai', category: 'brandable', description: 'Meet + wave modern', status: 'unchecked' },
+            { name: 'facepulse.ai', category: 'brandable', description: 'Face + pulse alive', status: 'unchecked' },
+            { name: 'chatglow.ai', category: 'brandable', description: 'Chat + glow positive', status: 'unchecked' },
+            { name: 'starfusion.ai', category: 'brandable', description: 'Star + fusion blend', status: 'unchecked' },
+            { name: 'vidflow.ai', category: 'brandable', description: 'Video + flow smooth', status: 'unchecked' },
+            { name: 'facebeam.ai', category: 'brandable', description: 'Face + beam transmission', status: 'unchecked' },
+
+            // Prefix Power: Get- Try- Hey- Yo-
+            { name: 'getface.ai', category: 'video-chat', description: 'Action prefix - get your face time', status: 'unchecked' },
+            { name: 'tryface.ai', category: 'video-chat', description: 'Try face interactions', status: 'unchecked' },
+            { name: 'heyface.ai', category: 'playful', description: 'Friendly greeting + face', status: 'unchecked' },
+            { name: 'yoface.ai', category: 'playful', description: 'Casual yo + face', status: 'unchecked' },
+            { name: 'getstar.ai', category: 'influencer', description: 'Get access to stars', status: 'unchecked' },
+            { name: 'heychat.ai', category: 'playful', description: 'Hey greeting chat', status: 'unchecked' },
+            { name: 'yomeet.ai', category: 'playful', description: 'Yo casual meet', status: 'unchecked' },
+            { name: 'gomeet.ai', category: 'video-chat', description: 'Go meet action', status: 'unchecked' },
+            { name: 'goface.ai', category: 'video-chat', description: 'Go face directive', status: 'unchecked' },
+            { name: 'hiface.ai', category: 'playful', description: 'Hi greeting face', status: 'unchecked' },
+            { name: 'useavatar.ai', category: 'ai-focused', description: 'Use avatar platform', status: 'unchecked' },
+            { name: 'findface.ai', category: 'video-chat', description: 'Find your face match', status: 'unchecked' },
+            { name: 'joinface.ai', category: 'social', description: 'Join face community', status: 'unchecked' },
+            { name: 'startalk.ai', category: 'influencer', description: 'Star talk platform', status: 'unchecked' },
+
+            // Suffix Variations: -ly, -ify, -hub, -lab
+            { name: 'facely.ai', category: 'brandable', description: 'Face + ly friendly', status: 'unchecked' },
+            { name: 'meetly.ai', category: 'brandable', description: 'Meet + ly casual', status: 'unchecked' },
+            { name: 'chatify.ai', category: 'brandable', description: 'Chat-ify transformation', status: 'unchecked' },
+            { name: 'faceify.ai', category: 'brandable', description: 'Face-ify verb form', status: 'unchecked' },
+            { name: 'starify.ai', category: 'influencer', description: 'Star-ify become a star', status: 'unchecked' },
+            { name: 'talkhub.ai', category: 'social', description: 'Talk hub central', status: 'unchecked' },
+            { name: 'vidhub.ai', category: 'video-chat', description: 'Video hub platform', status: 'unchecked' },
+            { name: 'facelab.ai', category: 'tech-forward', description: 'Face lab experimental', status: 'unchecked' },
+            { name: 'avatarlab.ai', category: 'tech-forward', description: 'Avatar lab innovation', status: 'unchecked' },
+            { name: 'meetlab.ai', category: 'tech-forward', description: 'Meet lab testing', status: 'unchecked' },
+            { name: 'chatworks.ai', category: 'tech-forward', description: 'Chat works platform', status: 'unchecked' },
+            { name: 'vidworks.ai', category: 'tech-forward', description: 'Video works service', status: 'unchecked' },
+
+            // Completely Invented Neologisms
+            { name: 'facio.ai', category: 'creative', description: 'Latin-inspired face invention', status: 'unchecked' },
+            { name: 'vixa.ai', category: 'creative', description: 'Invented vid-based name', status: 'unchecked' },
+            { name: 'chazzo.ai', category: 'creative', description: 'Playful chat invention', status: 'unchecked' },
+            { name: 'moxie.ai', category: 'creative', description: 'Energy and spirit', status: 'unchecked' },
+            { name: 'zora.ai', category: 'creative', description: 'Short invented name', status: 'unchecked' },
+            { name: 'vaya.ai', category: 'creative', description: 'Go/travel vibe', status: 'unchecked' },
+            { name: 'navi.ai', category: 'creative', description: 'Navigate/guide feeling', status: 'unchecked' },
+            { name: 'kova.ai', category: 'creative', description: 'Strong invented brand', status: 'unchecked' },
+            { name: 'zyx.ai', category: 'short', description: 'Ultra short alphabet end', status: 'unchecked' },
+            { name: 'qix.ai', category: 'short', description: 'Unique Q start', status: 'unchecked' },
+            { name: 'vyx.ai', category: 'short', description: 'V+Y+X combo', status: 'unchecked' },
+            { name: 'ziva.ai', category: 'creative', description: 'Hebrew inspired - radiant', status: 'unchecked' },
+            { name: 'rova.ai', category: 'creative', description: 'Rover-inspired roaming', status: 'unchecked' },
+            { name: 'lyva.ai', category: 'creative', description: 'Live variation', status: 'unchecked' },
+            { name: 'myxa.ai', category: 'creative', description: 'My + xa personal', status: 'unchecked' },
+
+            // Human Names (Trendy for AI)
+            { name: 'jasper.ai', category: 'brandable', description: 'Popular AI name - friendly', status: 'unchecked' },
+            { name: 'luna.ai', category: 'brandable', description: 'Moon - calm and present', status: 'unchecked' },
+            { name: 'nova.ai', category: 'brandable', description: 'New star - bright beginning', status: 'unchecked' },
+            { name: 'leo.ai', category: 'short', description: 'Lion - strong short name', status: 'unchecked' },
+            { name: 'mia.ai', category: 'short', description: 'Short sweet approachable', status: 'unchecked' },
+            { name: 'max.ai', category: 'short', description: 'Maximum - powerful', status: 'unchecked' },
+            { name: 'sage.ai', category: 'brandable', description: 'Wise and knowing', status: 'unchecked' },
+            { name: 'jade.ai', category: 'brandable', description: 'Precious stone - valuable', status: 'unchecked' },
+            { name: 'iris.ai', category: 'brandable', description: 'Eye connection', status: 'unchecked' },
+            { name: 'kai.ai', category: 'short', description: 'Ocean - flowing', status: 'unchecked' },
+            { name: 'ezra.ai', category: 'brandable', description: 'Modern biblical - helper', status: 'unchecked' },
+            { name: 'maya.ai', category: 'brandable', description: 'Illusion - perfect for avatars', status: 'unchecked' },
+
+            // Backward/Reverse Spellings
+            { name: 'ecaf.ai', category: 'creative', description: 'Face reversed - distinctive', status: 'unchecked' },
+            { name: 'teem.ai', category: 'creative', description: 'Meet reversed - interesting', status: 'unchecked' },
+            { name: 'rats.ai', category: 'creative', description: 'Star reversed - edgy', status: 'unchecked' },
+            { name: 'ativ.ai', category: 'creative', description: 'Vita reversed - life', status: 'unchecked' },
+            { name: 'divi.ai', category: 'creative', description: 'Divid/vivid reversed', status: 'unchecked' },
+
+            // More TLD Variations
+            { name: 'facemeet.chat', category: 'video-chat', description: 'Face meet on .chat', status: 'unchecked' },
+            { name: 'starface.live', category: 'influencer', description: 'Star face live', status: 'unchecked' },
+            { name: 'talkstar.live', category: 'influencer', description: 'Talk to stars live', status: 'unchecked' },
+            { name: 'facetime.live', category: 'video-chat', description: 'Face time live platform', status: 'unchecked' },
+            { name: 'chatstar.live', category: 'influencer', description: 'Chat with stars live', status: 'unchecked' },
+            { name: 'videoface.app', category: 'video-chat', description: 'Video face app', status: 'unchecked' },
+            { name: 'meetface.app', category: 'video-chat', description: 'Meet face app', status: 'unchecked' },
+            { name: 'starface.app', category: 'influencer', description: 'Star face app', status: 'unchecked' },
+            { name: 'facestar.app', category: 'influencer', description: 'Face star app', status: 'unchecked' },
+            { name: 'facetalk.video', category: 'video-chat', description: 'Face talk on .video', status: 'unchecked' },
+            { name: 'starinterview.video', category: 'influencer', description: 'Interview stars', status: 'unchecked' },
+            { name: 'facecall.video', category: 'video-chat', description: 'Face call video', status: 'unchecked' },
+
+            // Metaphor-Based Names
+            { name: 'constellation.ai', category: 'creative', description: 'Network of stars', status: 'unchecked' },
+            { name: 'spotlight.ai', category: 'influencer', description: 'In the spotlight with stars', status: 'unchecked' },
+            { name: 'backstage.ai', category: 'influencer', description: 'Backstage access feel', status: 'unchecked' },
+            { name: 'greenroom.ai', category: 'influencer', description: 'VIP celebrity green room', status: 'unchecked' },
+            { name: 'redcarpet.ai', category: 'influencer', description: 'Red carpet celebrity access', status: 'unchecked' },
+            { name: 'limelight.ai', category: 'influencer', description: 'In the limelight', status: 'unchecked' },
+            { name: 'papparazzi.ai', category: 'influencer', description: 'Celebrity photo/video feel', status: 'unchecked' },
+            { name: 'fanzone.ai', category: 'influencer', description: 'Fan zone access', status: 'unchecked' },
+            { name: 'viproom.ai', category: 'influencer', description: 'VIP access room', status: 'unchecked' },
+
+            // Emotion & Experience Names
+            { name: 'starstruck.ai', category: 'influencer', description: 'That starstruck feeling', status: 'unchecked' },
+            { name: 'fangirl.ai', category: 'influencer', description: 'Fangirl/fanboy vibes', status: 'unchecked' },
+            { name: 'fandom.ai', category: 'influencer', description: 'Fandom community', status: 'unchecked' },
+            { name: 'crush.ai', category: 'social', description: 'Celebrity crush connection', status: 'unchecked' },
+            { name: 'swoon.ai', category: 'social', description: 'Swoon over celebrities', status: 'unchecked' },
+            { name: 'adore.ai', category: 'social', description: 'Adore your idols', status: 'unchecked' },
+            { name: 'admire.ai', category: 'social', description: 'Admire influencers', status: 'unchecked' },
+
+            // Action-Oriented Names
+            { name: 'dialup.ai', category: 'video-chat', description: 'Dial up celebrities', status: 'unchecked' },
+            { name: 'ringup.ai', category: 'video-chat', description: 'Ring up stars', status: 'unchecked' },
+            { name: 'reachout.ai', category: 'social', description: 'Reach out to idols', status: 'unchecked' },
+            { name: 'linkup.ai', category: 'social', description: 'Link up with influencers', status: 'unchecked' },
+            { name: 'hookup.ai', category: 'social', description: 'Hook up connections', status: 'unchecked' },
+            { name: 'plugin.ai', category: 'social', description: 'Plugin to celebrities', status: 'unchecked' },
+            { name: 'tunein.ai', category: 'video-chat', description: 'Tune into stars', status: 'unchecked' },
+            { name: 'zapinto.ai', category: 'video-chat', description: 'Zap into face time', status: 'unchecked' },
+
+            // Tech-y Compound Names
+            { name: 'syncface.ai', category: 'tech-forward', description: 'Sync with faces', status: 'unchecked' },
+            { name: 'streamface.ai', category: 'tech-forward', description: 'Stream face interactions', status: 'unchecked' },
+            { name: 'beamface.ai', category: 'tech-forward', description: 'Beam faces instantly', status: 'unchecked' },
+            { name: 'warpface.ai', category: 'tech-forward', description: 'Warp speed face time', status: 'unchecked' },
+            { name: 'flashface.ai', category: 'tech-forward', description: 'Flash face connections', status: 'unchecked' },
+            { name: 'quantumface.ai', category: 'tech-forward', description: 'Quantum face tech', status: 'unchecked' },
+            { name: 'nexusface.ai', category: 'tech-forward', description: 'Nexus connection point', status: 'unchecked' },
+            { name: 'fusionface.ai', category: 'tech-forward', description: 'Fusion face technology', status: 'unchecked' },
+
+            // Trendy Gen Z Spellings
+            { name: 'facetyme.ai', category: 'playful', description: 'Face time Gen Z spelling', status: 'unchecked' },
+            { name: 'meetyou.ai', category: 'social', description: 'Meet you direct', status: 'unchecked' },
+            { name: 'seeu.ai', category: 'short', description: 'See you shortened', status: 'unchecked' },
+            { name: 'luvu.ai', category: 'playful', description: 'Love you fans', status: 'unchecked' },
+            { name: 'hmu.ai', category: 'playful', description: 'Hit me up slang', status: 'unchecked' },
+            { name: 'imu.ai', category: 'playful', description: 'I miss you connection', status: 'unchecked' },
+            { name: 'ur.ai', category: 'short', description: 'Your ultra short', status: 'unchecked' },
+            { name: 'sup.ai', category: 'playful', description: 'Whats up casual', status: 'unchecked' },
+
+            // More Creative Compounds
+            { name: 'faceport.ai', category: 'brandable', description: 'Face portal/port', status: 'unchecked' },
+            { name: 'starport.ai', category: 'brandable', description: 'Star portal access', status: 'unchecked' },
+            { name: 'facegate.ai', category: 'brandable', description: 'Face gateway', status: 'unchecked' },
+            { name: 'stargate.ai', category: 'brandable', description: 'Star gateway portal', status: 'unchecked' },
+            { name: 'facepass.ai', category: 'brandable', description: 'Face pass access', status: 'unchecked' },
+            { name: 'starpass.ai', category: 'brandable', description: 'Star pass VIP', status: 'unchecked' },
+            { name: 'facekey.ai', category: 'brandable', description: 'Face key unlock', status: 'unchecked' },
+            { name: 'starkey.ai', category: 'brandable', description: 'Star key access', status: 'unchecked' },
+
+            // Number-Letter Combos
+            { name: 'face2face.chat', category: 'video-chat', description: 'Face to face chat', status: 'unchecked' },
+            { name: 'star2you.ai', category: 'influencer', description: 'Star to you direct', status: 'unchecked' },
+            { name: 'me2star.ai', category: 'influencer', description: 'Me to star connection', status: 'unchecked' },
+            { name: 'u2celebrity.ai', category: 'influencer', description: 'You to celebrity', status: 'unchecked' },
+            { name: 'fan2star.ai', category: 'influencer', description: 'Fan to star bridge', status: 'unchecked' },
+
+            // More Invented Short Names
+            { name: 'vyx.io', category: 'short', description: 'Ultra short tech vibe', status: 'unchecked' },
+            { name: 'zyx.io', category: 'short', description: 'Alphabet end power', status: 'unchecked' },
+            { name: 'qyx.ai', category: 'short', description: 'Q unique start', status: 'unchecked' },
+            { name: 'pyx.ai', category: 'short', description: 'Pyx box container', status: 'unchecked' },
+            { name: 'tyx.ai', category: 'short', description: 'Tyx invented', status: 'unchecked' },
+            { name: 'ryx.ai', category: 'short', description: 'Ryx strong sound', status: 'unchecked' },
+            { name: 'nyx.ai', category: 'short', description: 'Nyx goddess night', status: 'unchecked' },
+            { name: 'lyx.ai', category: 'short', description: 'Lyx light variation', status: 'unchecked' },
+            { name: 'kyx.ai', category: 'short', description: 'Kyx edgy K', status: 'unchecked' },
+
+            // Emoji-Inspired (spelled out)
+            { name: 'wavehi.ai', category: 'playful', description: 'Wave hi greeting', status: 'unchecked' },
+            { name: 'smileface.ai', category: 'playful', description: 'Smile face friendly', status: 'unchecked' },
+            { name: 'hearteyes.ai', category: 'playful', description: 'Heart eyes starstruck', status: 'unchecked' },
+            { name: 'staremoji.ai', category: 'playful', description: 'Star emoji vibe', status: 'unchecked' },
+            { name: 'sparkle.ai', category: 'playful', description: 'Sparkle magic', status: 'unchecked' },
+            { name: 'glow.ai', category: 'playful', description: 'Glow radiance', status: 'unchecked' },
+
+            // More Extreme Vowel Drops
+            { name: 'clbrt.ai', category: 'creative', description: 'Celebrity extreme vowel drop', status: 'unchecked' },
+            { name: 'nflncr.ai', category: 'creative', description: 'Influencer extreme drop', status: 'unchecked' },
+            { name: 'cnvrst.ai', category: 'creative', description: 'Conversate vowel drop', status: 'unchecked' },
+            { name: 'ntrvw.ai', category: 'creative', description: 'Interview consonants only', status: 'unchecked' },
+
+            // Music/Sound Inspired
+            { name: 'vibe.ai', category: 'playful', description: 'Vibe energy connection', status: 'unchecked' },
+            { name: 'rhythm.ai', category: 'creative', description: 'Rhythm flow connection', status: 'unchecked' },
+            { name: 'melody.ai', category: 'creative', description: 'Melody harmonious', status: 'unchecked' },
+            { name: 'harmony.ai', category: 'creative', description: 'Harmony balance', status: 'unchecked' },
+            { name: 'echo.ai', category: 'creative', description: 'Echo reflection', status: 'unchecked' },
+            { name: 'pulse.ai', category: 'playful', description: 'Pulse heartbeat', status: 'unchecked' },
+            { name: 'beat.ai', category: 'short', description: 'Beat rhythm', status: 'unchecked' },
+
+            // Location/Space Metaphors
+            { name: 'orbit.ai', category: 'creative', description: 'Orbit around stars', status: 'unchecked' },
+            { name: 'cosmos.ai', category: 'creative', description: 'Cosmos universe', status: 'unchecked' },
+            { name: 'galaxy.ai', category: 'creative', description: 'Galaxy of stars', status: 'unchecked' },
+            { name: 'planet.ai', category: 'creative', description: 'Planet world', status: 'unchecked' },
+            { name: 'space.ai', category: 'creative', description: 'Space connection', status: 'unchecked' },
+            { name: 'nebula.ai', category: 'creative', description: 'Nebula star birth', status: 'unchecked' },
+
+            // More -ify variations
+            { name: 'meetify.ai', category: 'brandable', description: 'Meet-ify transform', status: 'unchecked' },
+            { name: 'vidify.ai', category: 'brandable', description: 'Video-ify make video', status: 'unchecked' },
+            { name: 'talkify.ai', category: 'brandable', description: 'Talk-ify enable talking', status: 'unchecked' },
+            { name: 'faceify.io', category: 'brandable', description: 'Face-ify on .io', status: 'unchecked' },
+            { name: 'liveify.ai', category: 'brandable', description: 'Live-ify make live', status: 'unchecked' },
+
+            // Weird but Memorable
+            { name: 'boop.ai', category: 'playful', description: 'Boop nose touch playful', status: 'unchecked' },
+            { name: 'zoom.ai', category: 'video-chat', description: 'Zoom face connection', status: 'unchecked' },
+            { name: 'ping.ai', category: 'video-chat', description: 'Ping notification reach', status: 'unchecked' },
+            { name: 'zing.ai', category: 'playful', description: 'Zing energy excitement', status: 'unchecked' },
+            { name: 'boom.ai', category: 'playful', description: 'Boom explosive connection', status: 'unchecked' },
+            { name: 'whoosh.ai', category: 'playful', description: 'Whoosh speed', status: 'unchecked' },
+            { name: 'zap.chat', category: 'playful', description: 'Zap instant chat', status: 'unchecked' },
+
+            // Modern Tech Slang
+            { name: 'flexface.ai', category: 'playful', description: 'Flex showing off with stars', status: 'unchecked' },
+            { name: 'slayface.ai', category: 'playful', description: 'Slay killing it with celebs', status: 'unchecked' },
+            { name: 'litface.ai', category: 'playful', description: 'Lit fire exciting faces', status: 'unchecked' },
+            { name: 'fireface.ai', category: 'playful', description: 'Fire amazing faces', status: 'unchecked' },
+            { name: 'highkey.ai', category: 'playful', description: 'Highkey obvious excitement', status: 'unchecked' },
+            { name: 'lowkey.ai', category: 'playful', description: 'Lowkey subtle cool', status: 'unchecked' },
+            { name: 'nopcap.ai', category: 'playful', description: 'No cap truthful', status: 'unchecked' },
+            { name: 'foryou.ai', category: 'social', description: 'For you personalized', status: 'unchecked' },
+            { name: 'fyp.ai', category: 'short', description: 'For you page TikTok style', status: 'unchecked' },
+
+            // More .com alternatives with modifiers
+            { name: 'facetime.chat', category: 'video-chat', description: 'Face time on .chat', status: 'unchecked' },
+            { name: 'videochat.live', category: 'video-chat', description: 'Video chat live', status: 'unchecked' },
+            { name: 'starchat.live', category: 'influencer', description: 'Star chat live now', status: 'unchecked' },
+            { name: 'meetstars.live', category: 'influencer', description: 'Meet stars live', status: 'unchecked' },
+            { name: 'chatidol.live', category: 'influencer', description: 'Chat with idol live', status: 'unchecked' },
+            { name: 'faceidol.ai', category: 'influencer', description: 'Face your idol', status: 'unchecked' },
+
+            // More Extreme Creative
+            { name: 'xxxface.ai', category: 'creative', description: 'Triple X face emphasis', status: 'unchecked' },
+            { name: '247face.ai', category: 'video-chat', description: '24/7 face availability', status: 'unchecked' },
+            { name: 'instantface.live', category: 'video-chat', description: 'Instant face live', status: 'unchecked' },
+            { name: 'nowface.ai', category: 'video-chat', description: 'Now face immediate', status: 'unchecked' },
+            { name: 'rightface.ai', category: 'video-chat', description: 'Right now face', status: 'unchecked' },
+
+            // More Human-like AI Names
+            { name: 'ava.chat', category: 'brandable', description: 'Ava name on .chat', status: 'unchecked' },
+            { name: 'zoe.ai', category: 'brandable', description: 'Zoe life meaning', status: 'unchecked' },
+            { name: 'aria.ai', category: 'brandable', description: 'Aria melody song', status: 'unchecked' },
+            { name: 'felix.ai', category: 'brandable', description: 'Felix happy lucky', status: 'unchecked' },
+            { name: 'ruby.ai', category: 'brandable', description: 'Ruby precious gem', status: 'unchecked' },
+            { name: 'finn.ai', category: 'short', description: 'Finn adventurer', status: 'unchecked' },
+            { name: 'milo.ai', category: 'short', description: 'Milo soldier', status: 'unchecked' },
+            { name: 'cleo.ai', category: 'brandable', description: 'Cleo glory', status: 'unchecked' },
+            { name: 'theo.ai', category: 'brandable', description: 'Theo divine gift', status: 'unchecked' },
+            { name: 'ivy.ai', category: 'short', description: 'Ivy climbing connection', status: 'unchecked' },
         ];
 
         let filteredDomains = [...domains];
@@ -598,6 +1065,107 @@
             }
 
             renderDomains();
+            renderListView();
+        }
+
+        function renderListView() {
+            const tbody = document.getElementById('domainsTableBody');
+            tbody.innerHTML = '';
+
+            filteredDomains.forEach((domain, index) => {
+                const row = document.createElement('tr');
+
+                let statusText = 'Not Checked';
+                let statusClass = '';
+                if (domain.status === 'available') {
+                    statusText = 'Available ✓';
+                    statusClass = 'style="color: #155724;"';
+                } else if (domain.status === 'taken') {
+                    statusText = 'Taken';
+                    statusClass = 'style="color: #721c24;"';
+                } else if (domain.status === 'error') {
+                    statusText = 'Check Failed';
+                    statusClass = 'style="color: #383d41;"';
+                }
+
+                row.innerHTML = `
+                    <td class="favorite-cell ${favorites.has(domain.name) ? 'active' : ''}"
+                        onclick="toggleFavoriteInList('${domain.name}')">
+                        ♥
+                    </td>
+                    <td class="domain-name-cell">${domain.name}</td>
+                    <td class="category-cell">${domain.category.replace('-', ' ')}</td>
+                    <td>${domain.description}</td>
+                    <td class="status-cell" ${statusClass}>${statusText}</td>
+                    <td class="action-cell">
+                        <button onclick="checkDomain(${index})">
+                            ${domain.status === 'checking' ? 'Checking...' : 'Check'}
+                        </button>
+                    </td>
+                `;
+
+                tbody.appendChild(row);
+            });
+        }
+
+        function toggleFavoriteInList(domainName) {
+            toggleFavorite(domainName);
+        }
+
+        function toggleView(view) {
+            const gridView = document.getElementById('domainsGrid');
+            const listView = document.getElementById('domainsList');
+            const gridBtn = document.getElementById('gridViewBtn');
+            const listBtn = document.getElementById('listViewBtn');
+
+            if (view === 'grid') {
+                gridView.classList.remove('hidden');
+                listView.classList.remove('active');
+                gridBtn.classList.add('active');
+                listBtn.classList.remove('active');
+            } else {
+                gridView.classList.add('hidden');
+                listView.classList.add('active');
+                gridBtn.classList.remove('active');
+                listBtn.classList.add('active');
+                renderListView();
+            }
+        }
+
+        function exportToCSV(domainsToExport, filename) {
+            const headers = ['Domain', 'Category', 'Description', 'Status', 'Favorited'];
+            const rows = domainsToExport.map(domain => {
+                let status = 'Not Checked';
+                if (domain.status === 'available') status = 'Available';
+                else if (domain.status === 'taken') status = 'Taken';
+                else if (domain.status === 'error') status = 'Check Failed';
+
+                const isFavorited = favorites.has(domain.name) ? 'Yes' : 'No';
+
+                return [
+                    domain.name,
+                    domain.category.replace('-', ' '),
+                    `"${domain.description.replace(/"/g, '""')}"`,
+                    status,
+                    isFavorited
+                ];
+            });
+
+            const csvContent = [
+                headers.join(','),
+                ...rows.map(row => row.join(','))
+            ].join('\n');
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+
+            link.setAttribute('href', url);
+            link.setAttribute('download', filename);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
 
         async function checkDomain(index) {
@@ -668,6 +1236,7 @@
             });
 
             renderDomains();
+            renderListView();
         }
 
         // Event listeners
@@ -678,8 +1247,24 @@
         document.getElementById('favoritesFilter').addEventListener('change', applyFilters);
         document.getElementById('checkAllBtn').addEventListener('click', checkAllDomains);
 
+        // View toggle listeners
+        document.getElementById('gridViewBtn').addEventListener('click', () => toggleView('grid'));
+        document.getElementById('listViewBtn').addEventListener('click', () => toggleView('list'));
+
+        // Export listeners
+        document.getElementById('exportFilteredBtn').addEventListener('click', () => {
+            const timestamp = new Date().toISOString().split('T')[0];
+            exportToCSV(filteredDomains, `domains-filtered-${timestamp}.csv`);
+        });
+
+        document.getElementById('exportAllBtn').addEventListener('click', () => {
+            const timestamp = new Date().toISOString().split('T')[0];
+            exportToCSV(domains, `domains-all-${timestamp}.csv`);
+        });
+
         // Initial render
         renderDomains();
+        renderListView();
     </script>
 </body>
 </html>
