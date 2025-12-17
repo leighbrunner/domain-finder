@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Avatar App - Domain Finder</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .controls {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .filters {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .filter-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .filter-group select,
+        .filter-group input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            padding: 10px;
+            background: #f5f5f5;
+            border-radius: 5px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+        }
+
+        .domains-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .domain-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+
+        .domain-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .domain-name {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+            word-break: break-all;
+        }
+
+        .domain-category {
+            display: inline-block;
+            padding: 4px 8px;
+            background: #e3f2fd;
+            color: #1976d2;
+            border-radius: 4px;
+            font-size: 0.75em;
+            margin-bottom: 10px;
+        }
+
+        .domain-description {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .domain-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 5px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .status-checking {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-available {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-taken {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .status-error {
+            background: #e2e3e5;
+            color: #383d41;
+        }
+
+        .check-btn {
+            padding: 8px 16px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.85em;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .check-btn:hover {
+            background: #5568d3;
+        }
+
+        .check-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .favorite-btn {
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+            margin-left: auto;
+        }
+
+        .favorite-btn.active {
+            color: #ff6b6b;
+        }
+
+        .favorite-btn:not(.active) {
+            color: #ddd;
+        }
+
+        .bulk-check-btn {
+            width: 100%;
+            padding: 15px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-top: 15px;
+            transition: background 0.2s;
+        }
+
+        .bulk-check-btn:hover {
+            background: #5568d3;
+        }
+
+        .bulk-check-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: white;
+        }
+
+        .price {
+            font-weight: bold;
+            color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>AI Avatar Domain Finder</h1>
+            <p>Find the perfect domain for your AI video influencer chat app</p>
+        </div>
+
+        <div class="controls">
+            <div class="filters">
+                <div class="filter-group">
+                    <label>Filter by Category</label>
+                    <select id="categoryFilter">
+                        <option value="all">All Categories</option>
+                        <option value="premium">Premium Names</option>
+                        <option value="ai-focused">AI Focused</option>
+                        <option value="video-chat">Video/Chat</option>
+                        <option value="influencer">Influencer Theme</option>
+                        <option value="creative">Creative/Unique</option>
+                        <option value="short">Short & Memorable</option>
+                        <option value="brandable">Brandable</option>
+                        <option value="playful">Playful/Fun</option>
+                        <option value="tech-forward">Tech Forward</option>
+                        <option value="social">Social/Connect</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label>Filter by TLD</label>
+                    <select id="tldFilter">
+                        <option value="all">All Extensions</option>
+                        <option value=".ai">.ai</option>
+                        <option value=".com">.com</option>
+                        <option value=".io">.io</option>
+                        <option value=".app">.app</option>
+                        <option value=".tv">.tv</option>
+                        <option value=".chat">.chat</option>
+                        <option value=".live">.live</option>
+                        <option value=".video">.video</option>
+                        <option value=".social">.social</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label>Filter by Status</label>
+                    <select id="statusFilter">
+                        <option value="all">All Status</option>
+                        <option value="unchecked">Not Checked</option>
+                        <option value="available">Available</option>
+                        <option value="taken">Taken</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label>Search</label>
+                    <input type="text" id="searchInput" placeholder="Search domain names...">
+                </div>
+
+                <div class="filter-group" style="display: flex; align-items: center; gap: 10px; padding-top: 20px;">
+                    <input type="checkbox" id="favoritesFilter" style="width: auto; cursor: pointer;">
+                    <label for="favoritesFilter" style="margin: 0; cursor: pointer;">Show Favorites Only</label>
+                </div>
+            </div>
+
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-value" id="totalDomains">0</div>
+                    <div class="stat-label">Total Domains</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="availableDomains">0</div>
+                    <div class="stat-label">Available</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="takenDomains">0</div>
+                    <div class="stat-label">Taken</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="favorites">0</div>
+                    <div class="stat-label">Favorites</div>
+                </div>
+            </div>
+
+            <button class="bulk-check-btn" id="checkAllBtn">Check All Domains</button>
+        </div>
+
+        <div class="domains-grid" id="domainsGrid"></div>
+    </div>
+
+    <script>
+        const domains = [
+            // Premium Short Names
+            { name: 'faceme.ai', category: 'premium', description: 'Short, memorable, perfect for face-to-face AI interactions', status: 'unchecked' },
+            { name: 'facewith.ai', category: 'premium', description: 'Personal connection focus - "face with your favorite influencer"', status: 'unchecked' },
+            { name: 'vface.ai', category: 'premium', description: 'Virtual Face - clean and tech-forward', status: 'unchecked' },
+            { name: 'avatalk.ai', category: 'premium', description: 'Avatar + Talk combo, very brandable', status: 'unchecked' },
+            { name: 'facetalk.com', category: 'premium', description: 'Classic .com extension, describes the product perfectly', status: 'unchecked' },
+            { name: 'face2face.ai', category: 'premium', description: 'Direct face-to-face connection concept', status: 'unchecked' },
+            { name: 'meetface.ai', category: 'premium', description: 'Simple, memorable - meet face to face', status: 'unchecked' },
+            { name: 'faceup.ai', category: 'premium', description: 'Face up - modern, upbeat branding', status: 'unchecked' },
+            { name: 'chatup.ai', category: 'premium', description: 'Chat up your idols - casual and friendly', status: 'unchecked' },
+            { name: 'vidsocial.ai', category: 'premium', description: 'Video social platform branding', status: 'unchecked' },
+
+            // AI Focused
+            { name: 'aiface.chat', category: 'ai-focused', description: 'Clear AI positioning with chat focus', status: 'unchecked' },
+            { name: 'virtualface.ai', category: 'ai-focused', description: 'Emphasizes virtual nature of interactions', status: 'unchecked' },
+            { name: 'syntheticface.ai', category: 'ai-focused', description: 'High-tech positioning for AI-generated avatars', status: 'unchecked' },
+            { name: 'facegen.ai', category: 'ai-focused', description: 'Face generation focused branding', status: 'unchecked' },
+            { name: 'smartface.ai', category: 'ai-focused', description: 'Intelligent face interaction platform', status: 'unchecked' },
+            { name: 'deepface.ai', category: 'ai-focused', description: 'Deep learning face technology', status: 'unchecked' },
+            { name: 'neuralface.ai', category: 'ai-focused', description: 'Neural network powered faces', status: 'unchecked' },
+            { name: 'aiavatar.chat', category: 'ai-focused', description: 'AI avatar chat platform', status: 'unchecked' },
+            { name: 'avatarengine.ai', category: 'ai-focused', description: 'Engine for avatar generation and chat', status: 'unchecked' },
+            { name: 'aiconnect.chat', category: 'ai-focused', description: 'AI-powered connections', status: 'unchecked' },
+            { name: 'cogniface.ai', category: 'ai-focused', description: 'Cognitive face interactions', status: 'unchecked' },
+            { name: 'mindface.ai', category: 'ai-focused', description: 'Intelligent mind-like face interactions', status: 'unchecked' },
+            { name: 'autoface.ai', category: 'ai-focused', description: 'Automated face generation platform', status: 'unchecked' },
+
+            // Video/Chat Focused
+            { name: 'videomeet.ai', category: 'video-chat', description: 'Video meeting with AI personalities', status: 'unchecked' },
+            { name: 'facetime.ai', category: 'video-chat', description: 'Plays on familiar FaceTime concept', status: 'unchecked' },
+            { name: 'livestar.ai', category: 'video-chat', description: 'Live video chats with stars/influencers', status: 'unchecked' },
+            { name: 'chatface.io', category: 'video-chat', description: 'Face-to-face chat platform', status: 'unchecked' },
+            { name: 'callwith.ai', category: 'video-chat', description: 'Call with anyone (AI version)', status: 'unchecked' },
+            { name: 'talktome.ai', category: 'video-chat', description: 'Personal, conversational branding', status: 'unchecked' },
+            { name: 'facecall.app', category: 'video-chat', description: 'Direct description as a face calling app', status: 'unchecked' },
+            { name: 'vidchat.ai', category: 'video-chat', description: 'Video chat simplified', status: 'unchecked' },
+            { name: 'livechat.ai', category: 'video-chat', description: 'Live AI chat platform', status: 'unchecked' },
+            { name: 'videocall.ai', category: 'video-chat', description: 'AI-powered video calls', status: 'unchecked' },
+            { name: 'facechat.live', category: 'video-chat', description: 'Live face chat platform', status: 'unchecked' },
+            { name: 'talkface.live', category: 'video-chat', description: 'Live talking face platform', status: 'unchecked' },
+            { name: 'chatnow.ai', category: 'video-chat', description: 'Chat now with AI personalities', status: 'unchecked' },
+            { name: 'instantface.ai', category: 'video-chat', description: 'Instant face connections', status: 'unchecked' },
+            { name: 'quickface.ai', category: 'video-chat', description: 'Quick face-to-face interactions', status: 'unchecked' },
+            { name: 'videomeet.io', category: 'video-chat', description: 'Video meeting platform on .io', status: 'unchecked' },
+            { name: 'faceconnect.ai', category: 'video-chat', description: 'Connect face-to-face', status: 'unchecked' },
+
+            // Influencer Theme
+            { name: 'meetyouridol.ai', category: 'influencer', description: 'Meet your idol virtually - emotional appeal', status: 'unchecked' },
+            { name: 'influencerface.ai', category: 'influencer', description: 'Clear positioning for influencer interactions', status: 'unchecked' },
+            { name: 'starchat.ai', category: 'influencer', description: 'Chat with stars - simple and appealing', status: 'unchecked' },
+            { name: 'celebface.ai', category: 'influencer', description: 'Celebrity face interactions', status: 'unchecked' },
+            { name: 'meetcreators.ai', category: 'influencer', description: 'Meet content creators virtually', status: 'unchecked' },
+            { name: 'idolface.ai', category: 'influencer', description: 'Face time with your idols', status: 'unchecked' },
+            { name: 'fanface.ai', category: 'influencer', description: 'Fan face-to-face meetings', status: 'unchecked' },
+            { name: 'starstalk.ai', category: 'influencer', description: 'Talk to the stars', status: 'unchecked' },
+            { name: 'celebmeet.ai', category: 'influencer', description: 'Meet celebrities virtually', status: 'unchecked' },
+            { name: 'famousface.ai', category: 'influencer', description: 'Face time with famous personalities', status: 'unchecked' },
+            { name: 'iconface.ai', category: 'influencer', description: 'Meet icons and influencers', status: 'unchecked' },
+            { name: 'creatorchat.ai', category: 'influencer', description: 'Chat with content creators', status: 'unchecked' },
+            { name: 'influencermeet.ai', category: 'influencer', description: 'Meet influencers face to face', status: 'unchecked' },
+            { name: 'fanmeet.ai', category: 'influencer', description: 'Fan meetings made virtual', status: 'unchecked' },
+            { name: 'meetstar.ai', category: 'influencer', description: 'Meet your favorite stars', status: 'unchecked' },
+
+            // Creative/Unique
+            { name: 'parallelpersona.ai', category: 'creative', description: 'Meet parallel versions of personalities', status: 'unchecked' },
+            { name: 'mirrorface.ai', category: 'creative', description: 'Mirror reality with AI personalities', status: 'unchecked' },
+            { name: 'echoface.ai', category: 'creative', description: 'Echo of real personalities in AI form', status: 'unchecked' },
+            { name: 'twinface.ai', category: 'creative', description: 'Digital twin concept for personalities', status: 'unchecked' },
+            { name: 'liveecho.ai', category: 'creative', description: 'Live echoes of influencers', status: 'unchecked' },
+            { name: 'rendezface.ai', category: 'creative', description: 'Rendezvous + face - meeting place', status: 'unchecked' },
+            { name: 'hologramface.ai', category: 'creative', description: 'Holographic face experiences', status: 'unchecked' },
+            { name: 'phantomface.ai', category: 'creative', description: 'Virtual phantom personalities', status: 'unchecked' },
+            { name: 'dimensionface.ai', category: 'creative', description: 'Multi-dimensional face interactions', status: 'unchecked' },
+            { name: 'portraitai.chat', category: 'creative', description: 'Living portrait conversations', status: 'unchecked' },
+            { name: 'dreamface.ai', category: 'creative', description: 'Meet your dream personalities', status: 'unchecked' },
+            { name: 'pixelface.ai', category: 'creative', description: 'Digital pixel-perfect faces', status: 'unchecked' },
+
+            // Short & Memorable
+            { name: 'vyou.ai', category: 'short', description: 'Virtual you - ultra short and memorable', status: 'unchecked' },
+            { name: 'vface.io', category: 'short', description: 'Virtual face - short .io extension', status: 'unchecked' },
+            { name: 'faceai.tv', category: 'short', description: 'Face AI on .tv extension', status: 'unchecked' },
+            { name: 'aimet.io', category: 'short', description: 'AI met - as in "I met them via AI"', status: 'unchecked' },
+            { name: 'vmeet.ai', category: 'short', description: 'Virtual meet - short and clear', status: 'unchecked' },
+            { name: 'hi.ai', category: 'short', description: 'Ultra simple greeting', status: 'unchecked' },
+            { name: 'hey.ai', category: 'short', description: 'Casual, friendly greeting', status: 'unchecked' },
+            { name: 'yo.ai', category: 'short', description: 'Super casual, modern appeal', status: 'unchecked' },
+            { name: 'ava.ai', category: 'short', description: 'Avatar shortened - clean brand', status: 'unchecked' },
+            { name: 'vid.ai', category: 'short', description: 'Video AI - super short', status: 'unchecked' },
+            { name: 'vix.ai', category: 'short', description: 'Unique, brandable short name', status: 'unchecked' },
+            { name: 'zap.ai', category: 'short', description: 'Quick, energetic branding', status: 'unchecked' },
+
+            // Brandable
+            { name: 'avatarchat.app', category: 'brandable', description: 'Avatar chat application on .app', status: 'unchecked' },
+            { name: 'facelink.ai', category: 'brandable', description: 'Link to faces - connection focused', status: 'unchecked' },
+            { name: 'livetalk.ai', category: 'brandable', description: 'Live talking with AI personalities', status: 'unchecked' },
+            { name: 'meetai.tv', category: 'brandable', description: 'Meet AI personalities on TV-focused extension', status: 'unchecked' },
+            { name: 'vidfriend.ai', category: 'brandable', description: 'Video friend - friendly, approachable', status: 'unchecked' },
+            { name: 'facehub.ai', category: 'brandable', description: 'Hub for face interactions', status: 'unchecked' },
+            { name: 'seeyou.ai', category: 'brandable', description: 'See you - personal connection', status: 'unchecked' },
+            { name: 'hello.ai', category: 'brandable', description: 'Simple greeting - ultra brandable', status: 'unchecked' },
+            { name: 'faceroom.ai', category: 'brandable', description: 'Virtual room for face-to-face', status: 'unchecked' },
+            { name: 'talkstar.ai', category: 'brandable', description: 'Talk to stars - simple value prop', status: 'unchecked' },
+            { name: 'omnivid.ai', category: 'brandable', description: 'Omni video platform - all encompassing', status: 'unchecked' },
+            { name: 'nexface.ai', category: 'brandable', description: 'Next generation face platform', status: 'unchecked' },
+            { name: 'vivaface.ai', category: 'brandable', description: 'Viva face - energetic and alive', status: 'unchecked' },
+            { name: 'prismface.ai', category: 'brandable', description: 'Multifaceted face interactions', status: 'unchecked' },
+            { name: 'pulseface.ai', category: 'brandable', description: 'Living, breathing face platform', status: 'unchecked' },
+            { name: 'orbface.ai', category: 'brandable', description: 'Orbital face connections', status: 'unchecked' },
+
+            // Playful/Fun
+            { name: 'facetap.ai', category: 'playful', description: 'Tap into face conversations', status: 'unchecked' },
+            { name: 'facepop.ai', category: 'playful', description: 'Pop up face chats', status: 'unchecked' },
+            { name: 'chatpop.ai', category: 'playful', description: 'Pop chat interactions', status: 'unchecked' },
+            { name: 'buzzface.ai', category: 'playful', description: 'Buzzing face conversations', status: 'unchecked' },
+            { name: 'zapface.ai', category: 'playful', description: 'Quick zap face meetings', status: 'unchecked' },
+            { name: 'vibeface.ai', category: 'playful', description: 'Vibe with your favorite faces', status: 'unchecked' },
+            { name: 'sparkface.ai', category: 'playful', description: 'Spark connections with faces', status: 'unchecked' },
+            { name: 'glowface.ai', category: 'playful', description: 'Glowing face interactions', status: 'unchecked' },
+            { name: 'winkface.ai', category: 'playful', description: 'Playful wink face branding', status: 'unchecked' },
+            { name: 'jamface.ai', category: 'playful', description: 'Jam with your idols', status: 'unchecked' },
+
+            // Tech Forward
+            { name: 'nextgen.ai', category: 'tech-forward', description: 'Next generation AI platform', status: 'unchecked' },
+            { name: 'quantumface.ai', category: 'tech-forward', description: 'Quantum leap in face technology', status: 'unchecked' },
+            { name: 'cloudface.ai', category: 'tech-forward', description: 'Cloud-based face platform', status: 'unchecked' },
+            { name: 'streamface.ai', category: 'tech-forward', description: 'Streaming face technology', status: 'unchecked' },
+            { name: 'realtimeface.ai', category: 'tech-forward', description: 'Real-time face generation', status: 'unchecked' },
+            { name: 'edgeface.ai', category: 'tech-forward', description: 'Cutting edge face tech', status: 'unchecked' },
+            { name: 'renderface.ai', category: 'tech-forward', description: 'Real-time face rendering', status: 'unchecked' },
+            { name: 'pixelstream.ai', category: 'tech-forward', description: 'Pixel-perfect streaming', status: 'unchecked' },
+            { name: 'metaface.ai', category: 'tech-forward', description: 'Metaverse face interactions', status: 'unchecked' },
+            { name: 'hyperface.ai', category: 'tech-forward', description: 'Hyper-realistic face platform', status: 'unchecked' },
+
+            // Social/Connect
+            { name: 'socialface.ai', category: 'social', description: 'Social face platform', status: 'unchecked' },
+            { name: 'connectface.ai', category: 'social', description: 'Connect through faces', status: 'unchecked' },
+            { name: 'linkface.ai', category: 'social', description: 'Link to faces you love', status: 'unchecked' },
+            { name: 'friendface.ai', category: 'social', description: 'Make friends with faces', status: 'unchecked' },
+            { name: 'togetherhface.ai', category: 'social', description: 'Together through face interactions', status: 'unchecked' },
+            { name: 'meetup.ai', category: 'social', description: 'AI-powered meetups', status: 'unchecked' },
+            { name: 'hangface.ai', category: 'social', description: 'Hang out with AI faces', status: 'unchecked' },
+            { name: 'vibeconnect.ai', category: 'social', description: 'Connect through vibes', status: 'unchecked' },
+            { name: 'squadface.ai', category: 'social', description: 'Your squad of AI personalities', status: 'unchecked' },
+            { name: 'circleface.ai', category: 'social', description: 'Inner circle face connections', status: 'unchecked' },
+
+            // More Premium Options
+            { name: 'face.chat', category: 'premium', description: 'Perfect domain - face + chat', status: 'unchecked' },
+            { name: 'avatar.chat', category: 'premium', description: 'Premium avatar chat domain', status: 'unchecked' },
+            { name: 'talk.ai', category: 'premium', description: 'Ultra premium - just "talk"', status: 'unchecked' },
+            { name: 'meet.ai', category: 'premium', description: 'Ultra premium - just "meet"', status: 'unchecked' },
+            { name: 'live.ai', category: 'premium', description: 'Ultra premium - just "live"', status: 'unchecked' },
+
+            // .com alternatives
+            { name: 'avatarface.com', category: 'brandable', description: 'Avatar face on classic .com', status: 'unchecked' },
+            { name: 'virtualchat.com', category: 'video-chat', description: 'Virtual chat on .com', status: 'unchecked' },
+            { name: 'aivideos.com', category: 'video-chat', description: 'AI videos platform', status: 'unchecked' },
+            { name: 'facemeet.com', category: 'video-chat', description: 'Face meetings on .com', status: 'unchecked' },
+            { name: 'idolchat.com', category: 'influencer', description: 'Idol chat on .com', status: 'unchecked' },
+
+            // More creative TLDs
+            { name: 'face.live', category: 'video-chat', description: 'Live face platform', status: 'unchecked' },
+            { name: 'avatar.live', category: 'video-chat', description: 'Live avatar interactions', status: 'unchecked' },
+            { name: 'star.chat', category: 'influencer', description: 'Star chat on .chat TLD', status: 'unchecked' },
+            { name: 'idol.chat', category: 'influencer', description: 'Idol chat on .chat TLD', status: 'unchecked' },
+            { name: 'face.video', category: 'video-chat', description: 'Face video on .video TLD', status: 'unchecked' },
+            { name: 'meet.video', category: 'video-chat', description: 'Meet on .video TLD', status: 'unchecked' },
+            { name: 'face.social', category: 'social', description: 'Face on .social TLD', status: 'unchecked' },
+            { name: 'connect.social', category: 'social', description: 'Connect on .social TLD', status: 'unchecked' },
+        ];
+
+        let filteredDomains = [...domains];
+
+        // Load favorites from localStorage
+        let favorites = new Set();
+        try {
+            const savedFavorites = localStorage.getItem('domainFavorites');
+            if (savedFavorites) {
+                favorites = new Set(JSON.parse(savedFavorites));
+            }
+        } catch (e) {
+            console.error('Error loading favorites:', e);
+        }
+
+        function renderDomains() {
+            const grid = document.getElementById('domainsGrid');
+            grid.innerHTML = '';
+
+            filteredDomains.forEach((domain, index) => {
+                const card = document.createElement('div');
+                card.className = 'domain-card';
+
+                const tld = domain.name.substring(domain.name.lastIndexOf('.'));
+
+                let statusBadge = '';
+                let statusClass = '';
+
+                if (domain.status === 'unchecked') {
+                    statusClass = 'status-checking';
+                    statusBadge = 'Not Checked';
+                } else if (domain.status === 'available') {
+                    statusClass = 'status-available';
+                    statusBadge = 'Available ✓';
+                } else if (domain.status === 'taken') {
+                    statusClass = 'status-taken';
+                    statusBadge = 'Taken';
+                } else if (domain.status === 'error') {
+                    statusClass = 'status-error';
+                    statusBadge = 'Check Failed';
+                }
+
+                card.innerHTML = `
+                    <div class="domain-name">${domain.name}</div>
+                    <span class="domain-category">${domain.category.replace('-', ' ').toUpperCase()}</span>
+                    <div class="domain-description">${domain.description}</div>
+                    <div class="domain-status">
+                        <span class="status-badge ${statusClass}">${statusBadge}</span>
+                        <button class="check-btn" onclick="checkDomain(${index})">
+                            ${domain.status === 'checking' ? 'Checking...' : 'Check'}
+                        </button>
+                        <button class="favorite-btn ${favorites.has(domain.name) ? 'active' : ''}"
+                                onclick="toggleFavorite('${domain.name}')">
+                            ♥
+                        </button>
+                    </div>
+                `;
+
+                grid.appendChild(card);
+            });
+
+            updateStats();
+        }
+
+        function updateStats() {
+            document.getElementById('totalDomains').textContent = filteredDomains.length;
+            document.getElementById('availableDomains').textContent =
+                domains.filter(d => d.status === 'available').length;
+            document.getElementById('takenDomains').textContent =
+                domains.filter(d => d.status === 'taken').length;
+            document.getElementById('favorites').textContent = favorites.size;
+        }
+
+        function toggleFavorite(domainName) {
+            if (favorites.has(domainName)) {
+                favorites.delete(domainName);
+            } else {
+                favorites.add(domainName);
+            }
+
+            // Save to localStorage
+            try {
+                localStorage.setItem('domainFavorites', JSON.stringify([...favorites]));
+            } catch (e) {
+                console.error('Error saving favorites:', e);
+            }
+
+            renderDomains();
+        }
+
+        async function checkDomain(index) {
+            const domain = filteredDomains[index];
+            const actualDomain = domains.find(d => d.name === domain.name);
+
+            actualDomain.status = 'checking';
+            renderDomains();
+
+            try {
+                // Using a DNS lookup approach - checking if domain resolves
+                const response = await fetch(`https://dns.google/resolve?name=${domain.name}&type=A`);
+                const data = await response.json();
+
+                // If Status is 0 or 3, domain might be available
+                // Status 0 = NOERROR (domain exists)
+                // Status 3 = NXDOMAIN (domain doesn't exist - likely available)
+
+                if (data.Status === 3) {
+                    actualDomain.status = 'available';
+                } else if (data.Status === 0) {
+                    actualDomain.status = 'taken';
+                } else {
+                    actualDomain.status = 'error';
+                }
+            } catch (error) {
+                console.error('Error checking domain:', error);
+                actualDomain.status = 'error';
+            }
+
+            renderDomains();
+        }
+
+        async function checkAllDomains() {
+            const btn = document.getElementById('checkAllBtn');
+            btn.disabled = true;
+            btn.textContent = 'Checking...';
+
+            // Check domains in batches to avoid rate limiting
+            const batchSize = 5;
+            for (let i = 0; i < domains.length; i += batchSize) {
+                const batch = domains.slice(i, i + batchSize);
+                await Promise.all(batch.map((_, idx) => checkDomain(i + idx)));
+                // Small delay between batches
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
+
+            btn.disabled = false;
+            btn.textContent = 'Check All Domains';
+        }
+
+        function applyFilters() {
+            const categoryFilter = document.getElementById('categoryFilter').value;
+            const tldFilter = document.getElementById('tldFilter').value;
+            const statusFilter = document.getElementById('statusFilter').value;
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const showFavoritesOnly = document.getElementById('favoritesFilter').checked;
+
+            filteredDomains = domains.filter(domain => {
+                const matchesCategory = categoryFilter === 'all' || domain.category === categoryFilter;
+                const matchesTld = tldFilter === 'all' || domain.name.endsWith(tldFilter);
+                const matchesStatus = statusFilter === 'all' || domain.status === statusFilter;
+                const matchesSearch = domain.name.toLowerCase().includes(searchTerm) ||
+                                     domain.description.toLowerCase().includes(searchTerm);
+                const matchesFavorites = !showFavoritesOnly || favorites.has(domain.name);
+
+                return matchesCategory && matchesTld && matchesStatus && matchesSearch && matchesFavorites;
+            });
+
+            renderDomains();
+        }
+
+        // Event listeners
+        document.getElementById('categoryFilter').addEventListener('change', applyFilters);
+        document.getElementById('tldFilter').addEventListener('change', applyFilters);
+        document.getElementById('statusFilter').addEventListener('change', applyFilters);
+        document.getElementById('searchInput').addEventListener('input', applyFilters);
+        document.getElementById('favoritesFilter').addEventListener('change', applyFilters);
+        document.getElementById('checkAllBtn').addEventListener('click', checkAllDomains);
+
+        // Initial render
+        renderDomains();
+    </script>
+</body>
+</html>
